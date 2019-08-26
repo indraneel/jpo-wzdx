@@ -16,8 +16,7 @@ Updated 9/15/2018
     - [Data Frames](#data-frames)
        - [StartDateTime](#startdatetime)
        - [EndDateTime](#enddatetime)
-       - [BeginLocation](#beginlocation)
-       - [EndLocation](#endlocation)
+       - [Location](#location)
     - [Enumerated Types](#enumerated-types)
     - [Enumerated Type Definitions](#enumerated-type-definitions)
     - [Enumerated Value Definitions Derived from ITS Standards](#enumerated-value-definitions-derived-from-its-standards)
@@ -41,13 +40,12 @@ Updated 9/15/2018
 - [Table 2 WZDx Header Element Information](#table-2-wzdx-header-element-information)
 - [Table 3 StartDateTime Data Frame Table](#table-3-startdatetime-data-frame-table)
 - [Table 4 EndDateTime Data Frame Table](#table-4-enddatetime-data-frame-table)
-- [Table 5 BeginLocation Data Frame Table](#table-5-beginlocation-data-frame-table)
-- [Table 6 EndLocation Data Frame Table](#table-6-endlocation-data-frame-table)
-- [Table 7 Enumerated Types Table](#table-7-enumerated-types-table)
-- [Table 8 Work Zone Status Definition Table](#table-8-work-zone-status-definition-table)
-- [Table 9 Spatial and Time Verification Definitions](#table-9-spatial-and-time-verification-definitions)
-- [Table 10 RoadRestrictions Definitions](#table-10-roadrestrictions-definitions)
-- [Table 11 Metadata](#table-11-metadata)
+- [Table 5 Location Data Frame Table](#table-5-location-data-frame-table)
+- [Table 6 Enumerated Types Table](#table-6-enumerated-types-table)
+- [Table 7 Work Zone Status Definition Table](#table-7-work-zone-status-definition-table)
+- [Table 8 Spatial and Time Verification Definitions](#table-8-spatial-and-time-verification-definitions)
+- [Table 9 RoadRestrictions Definitions](#table-9-roadrestrictions-definitions)
+- [Table 10 Metadata](#table-11-metadata)
 - [Figure 1 Work Zone Activity Organization](#figure-1-work-zone-activity-organization)
 
 ## Introduction
@@ -88,8 +86,7 @@ The remainder of this document is organized into the following sections:
 - **Data Frames** -  This section expands on the description of the data frames listed in the data dictionary (Section 2.1) and identifies values for data elements that contain standardized enumerations.  Tables are included for the following data frames:
     - StartDateTime
     - EndDateTime
-    - BeginLocation
-    - EndLocation
+    - Location
 - **Enumerated Types** - This section includes a table of enumerated data elements.
 - **Enumerated Type Definitions** - This section includes definitions for enumerated types including work zone status, status of Time and Location, and Road Restrictions. 
 - **Metadata** - This section describes the contents of a static file with information about the quality and context of data in the data feed. 
@@ -119,12 +116,11 @@ Data Name | Data Type | Data Description | Conformance | Notes
 **subidentifier** | Data element | A unique identifier issued by data feed provider<br>that provides additional references to project or activity | Optional | This identifier may be used in more<br>than one feed as a reference to an<br>agency project number or permit ID
 **StartDateTime** | Data Frame | The time and date when a work zone<br>starts | Required |
 **EndDateTime** | Data Frame | The time and date when a work zone<br>ends | Required | 
-**BeginLocation** | Data Frame | The LOCATION when work zone<br>impact begins along a single road in<br>a single direction (see<br>BeginLocation).The impact typically<br>begins where the first channeling<br>device (e.g., cone or barrel) is<br>located. | Required | The method used for<br>designating impact<br>should be included in a<br>static Metadata file (see<br>Section 2.7)
-**EndLocation** | Data Frame | The LOCATION along a single road<br>in a single direction when work zone<br>impact ends and the traffic returns to<br>normal (See EndLocation) | Required | The method used for<br>designating impact<br>should be included in a<br>static Metadata file (see Section 2.7)
+**Location** | Data Frame | The LOCATION of the work zone<br>along a single road in<br>a single direction, from where the impact begins to where impact ends. | Required | The method used for<br>designating impact<br>should be included in a<br>static Metadata file (see<br>Section 2.7)
 **wz-Status** | Enum | The status of the work zone | Optional | See Enumerated Type Definitions
-**totalLanes** | Data element | The total number of lanes associated<br>with the road segment designated by<br>the BeginLocation and EndLocation | Optional | A segment is a part of a<br>roadway in a single<br>direction designated by<br>a start (BeginLocation)<br>and end (EndLocation)
-**openLanes** | Enum | The laneType that is opened on the road segment<br>designated by<br>the work zone BeginLocation | Optional |
-**closedLanes** | Enum | The laneType that is closed due<br>to the work zone on the road segment<br>designated by the Begin Location<br>and EndLocation | Required | More detailed lane<br>impacts / status will be<br>described in Version 2<br>of the specification
+**totalLanes** | Data element | The total number of lanes associated<br>with the road segment designated by<br>Location | Optional | A segment is a part of a<br>roadway in a single<br>direction designated by<br>Location
+**openLanes** | Enum | The laneType that is opened on the road segment<br>designated by<br>the work zone Location | Optional |
+**closedLanes** | Enum | The laneType that is closed due<br>to the work zone on the road segment<br>designated by Location | Required | More detailed lane<br>impacts / status will be<br>described in Version 2<br>of the specification
 **closedShoulders** | Enum | An enumerated type identifying the<br>shoulder lanes that are closed | Optional | To explicitly state that no<br>shoulders are closed,<br>use none
 **workersPresent** | Data element | A flag indicating that there are<br>workers present in the work zone | Optional | 
 **reducedSpdPosted** | Data element | The reduced speed limit posted in<br>the work zone | Optional |
@@ -172,49 +168,35 @@ Data | Data Description | Conformance | Notes
 **endDateTime-cancelled** | Cancellation of a planned end <br>time and date assocaited<br>with a work zone | Conditional<ul><li>startDateTime-est or</li><li>startDateTime-ver or</li><li>startDateTime-cancelled</li></ul> | |
 **timeConfidenceLevel** | A confidence leve (in<br>percentage) of when the<br>work zone activities will<br>actually start | Optional | For future use
 
-#### BeginLocation
+#### Location
 Definition: The LOCATION when work zone impact begins along a single road in a single direction. Provide method for describing “impact” in metadata file (see Section 2.7).
 
-#### Table 5. BeginLocation Data Frame Table
+#### Table 5. Location Data Frame Table
 Data | Data Description | Conformance | Notes
 ---- | ---------------- | ----------- | -----
 **roadName** | The name of the road on which<br>the work zone applies which is<br>known by the public | Required | Add a business rule that<br>pulls data from a specified<br>list or formal naming<br>conventions, for example,<br>(1) arterials comply with the<br>USPS Street Suffix Abbreviations (USPS Pub<br>28); (2) all Interstates will<br>be abbreviated as I-#, state<br>route with the<br>state abbreviation and then the number, etc. |
 **roadNum** | The road number designated<br>by a jurisdiction such as a<br>county, state or interstate | Optional | Examples I-5, VT 133 |
 **roadDirection** | The designated direction of the<br>roadName that is impacted by<br>the work zone activity | Required | Example North (for I-5 North) |
-**latitude-est** | The estimated latitude along<br>the roadway where the work<br>zone area begins | Conditional<ul><li>latitude-est or</li><li>latitude-ver</li></ul> |  |
-**latitude-ver** | A verified latitude<br>along the roadway where the work zone<br>area begins | Conditional<ul><li>latitude-est or</li><li>latitude-ver</li></ul> | Describe verification<br>method in metadata file
-**longitude-est** | The estimated longitude along<br>the roadway where the<br>work zone area begins | Conditional<ul><li>longitude-est or</li><li>longitude-ver</li></ul> |  |
-**longitude-ver** | A verified longitude along the<br>roadway where the work zone<br>area begins | Conditional<ul><li>longitude-est or</li><li>longitude-ver</li></ul> | Describe verification<br>method in metadata file
-**milepost-est** | The estimated linear distance<br>measured against a milepost<br>marker along a roadway where<br>the work zone begins | Optional<br><br>If included only<br>one milepost<br>value (-est or -ver<br>is needed) | A milepost or mile marker is<br>a surveyed distance posted<br>along a roadway measuring<br>the length (in miles or tenth<br>of a mile) from the south<br>west to the north east. <br>These markers are typically<br>notated on State and local<br>government digital road<br>networks. Provide link to<br>description of milepost<br>method in metadata file<br>(see Section 2.7).
-**milepost-ver** | An accurately linear distance<br>measured against a milepost<br>marker along a roadway where the<br>work zone begins | Optional<br><br>If included only<br>one milepost<br>value (-est or -ver<br>is needed) |  |
+**polyline-est** | The estimated polyline along<br>the roadway where the work<br>zone area begins | Conditional<ul><li>polyline-est or</li><li>polyline-ver</li></ul> |  |
+**polyline-ver** | The verified polyline along<br>the roadway where the work<br>zone area begins | Conditional<ul><li>polyline-est or</li><li>polyline-ver</li></ul> |  |
+**milepost-start-est** | The estimated linear distance<br>measured against a milepost<br>marker along a roadway where<br>the work zone begins | Optional<br><br>If included only<br>one milepost<br>value (-est or -ver<br>is needed) | A milepost or mile marker is<br>a surveyed distance posted<br>along a roadway measuring<br>the length (in miles or tenth<br>of a mile) from the south<br>west to the north east. <br>These markers are typically<br>notated on State and local<br>government digital road<br>networks. Provide link to<br>description of milepost<br>method in metadata file<br>(see Section 2.7).
+**milepost-start-ver** | An accurately linear distance<br>measured against a milepost<br>marker along a roadway where the<br>work zone ends | Optional<br><br>If included only<br>one milepost<br>value (-est or -ver<br>is needed) |  |
+**milepost-end-est**-start | The estimated linear distance<br>measured against a milepost<br>marker along a roadway where<br>the work zone ends | Optional<br><br>If included only<br>one milepost<br>value (-est or -ver<br>is needed) | A milepost or mile marker is<br>a surveyed distance posted<br>along a roadway measuring<br>the length (in miles or tenth<br>of a mile) from the south<br>west to the north east. <br>These markers are typically<br>notated on State and local<br>government digital road<br>networks. Provide link to<br>description of milepost<br>method in metadata file<br>(see Section 2.7).
+**milepost-end-ver** | An accurately linear distance<br>measured against a milepost<br>marker along a roadway where the<br>work zone begins | Optional<br><br>If included only<br>one milepost<br>value (-est or -ver<br>is needed) |  |
 **crossStreet** | The cross street along the<br>roadway where the work zone<br>area begins | Conditional | Required when Road<br>Classification is arterial
 
-#### EndLocation
-Definition: The LOCATION along a single road in a single direction when work zone impact ends and the traffic returns to normal. Provide method for describing “impact” in metadata file (see Section 2.7)
-
-#### Table 6. EndLocation Data Frame Table
-Data Name | Data Description | Conformance | Notes
---------- | ---------------- | ----------- | -----
-**latitude-est** | The latitude along a roadway<br>where the work zone area ends<br>and the traffic returns to normal | Conditional<ul><li>latitude-est or</li><li>latitude-ver</li></ul> |  |
-**latitude-ver** | A verified latitude along<br>the roadway where the work zone<br>area ends | Conditional<ul><li>latitude-est or</li><li>latitude-ver</li></ul> | Descibe verification method in metadata file
-**longitude-est** | The longitude along a roadway<br>where the work zone area ends<br>and the traffic returns to normal | Required |  |
-**longitude-ver** | A verified longitude along the<br>roadway where the work zone<br>area ends | Conditional<ul><li>longitude-est or</li><li>longitude-ver</li></ul> | Describe verification<br>method in metadata file
-**milepost-est** | The measured linear distance<br>along a roadway where the<br>work zone begins | Optional<br><br>If included only<br>one milepost<br>value (-est or -ver<br>is needed) | Provide link to description<br>of milepost method in<br>metadata file (see Section 2.7)
-**milepost-ver** | An accurately linear distance measured<br>against a milepost<br>marker along a roadway where<br>the work zone begins | Optional<br><br>If included only<br>one milepost<br>value (-est or -ver<br>is needed) |  |
-**crossStreet** | The cross street along a<br>roadway where the work zone<br>area ends and the traffic returns<br>to normal | Conditional | Required when Road Classification is arterial
-
 ### Enumerated Types
-#### Table 7. Enumerated Types Table
+#### Table 8. Enumerated Types Table
 Data Element | Used by | Allowed Values | Notes | Source
 ------------ | ------- | -------------- | ----- | ------
 **wz-Status** | WorkZoneActivity | See Enumerated Type<br>Definitions (Table 8) 
-**roadDirection** | BeginLocation | <ul><li>northbound</li><li>eastbound</li><li>eastbound</li><li>southbound</li><li>westbound</li></ul> |  | Adapted from<br>TMDD link-<br>alignment
+**roadDirection** | Location | <ul><li>northbound</li><li>eastbound</li><li>eastbound</li><li>southbound</li><li>westbound</li></ul> |  | Adapted from<br>TMDD link-<br>alignment
 **roadRestriction** | RoadRestrictions | <ul><li>no-trucks</li><li>travel-peak-hours-only</li><li>hov-3</li><li>hov-2</li><li>no-parking</li><li>bike-lane</li><li>ramp</li><li>towing-prohibited</li><li>permitted-oversize-loads-<br>prohibited (this applies to<br>annual oversize load<br>permits</li><li>reduced-width</li><li>reduced-height</li><li>reduced-length</li><li>reduced-weight</li><ul><li>axle-load-limit</li><li>gross-weight-limit</li></ul></ul> | Included one<br>or more<br>flags as needed | See<br>definitions<br>below
 **laneType** | openLanes,<br>closedLanes | <ul><li>all</li><li>left-lane</li><li>right-lane</li><li>left-2-lanes</li><li>left-3-lanes</li>right-2-lanes</li><li>right-3-lanes</li><li>center</li><li>middle-lane</li><li>right-turning-lane</li><li>left-turning-lane</li><li>right-exit-lane</li><li>left-exit-lane</li><li>right-merging-lane</li><li>left-merging-lane</li><li>right-exit-ramp</li><li>right-second-exit-ramp</li><li>right-entrance-ramp</li><li>right-second-entrance-ramp</li><li>left-exit-ramp</li><li>left-second-exit-ramp</li><li>left-entrance-ramp</li><li>left-second-entrance-ramp</li><li>sidewalk</li><li>bike-lane</li><li>none</li><li>unknown</li><li>alternate-flow-lane</li><li>shift-left</li><li>shift-right</li></ul> |  | Adapted from<br>TMDD<br>LaneRoadway
 **closedShoulders** | WorkZoneActivity | <ul><li>outside</li><li>inside</li><li>both</li><li>none</li><li>unknown</li></ul> |  | Adapted from<br>TMDD<br>LaneRoadway
 
 ### Enumerated Type Definitions
-#### Table 8. Work Zone Status Definition Table
+#### Table 9. Work Zone Status Definition Table
 Term | WZ-Status Description
 ---- | ---------------------
 **Planned** | Planned status is associated with overall project or phase timing and locations.<br>Typically, this information is estimated during planning or early design phases. The<br>WZDx will not generally include planned activities.
@@ -223,7 +205,7 @@ Term | WZ-Status Description
 **Cancelled** | Reported cancellation of a proposed or active WZ; the coverage applies to the work zone activity record.<ul><li>When date/time is estimated, the cancellation may be one or more days<br>associated within the reported scheduled datetimes</li></ul>
 **Completed** | Work Zone is closed and completed; all work zone impacts are mitigated. This status<br>may be used when a work zone activity is completed earlier than expected.
 
-#### Table 9. Spatial and Time Verification Definitions
+#### Table 10. Spatial and Time Verification Definitions
 Term | WZ-Status Description
 ---- | ---------------------
 **DateTime<br>Estimated(-est)** | Specific times/dates when work will or is occurring; includes advanced notice of<br>activities or unverified work zone activities. This date/time may be reported in<br>advance, but is not actively verified on day of event.
@@ -231,7 +213,7 @@ Term | WZ-Status Description
 **Location<br>Estimated (-est)** | Estimated location associated with work zone activities and lane closures.<br>An estimated measurement may be based on an approximation of a location<br>referencing method (e.g., lat/long or milepost), for example: a point relative to a<br>posted milemarker, point on a map, or GPS device that provides less than<br>centimeter accuracy.
 **Location Verified<br>(-ver)** | Actual reported information about work zone locations. Actual location is<br>typically measured by a calibrated navigation or survey system to centimeter<br>accuracy (six decimal places for latitude and longitude).
 
-#### Table 10. RoadRestrictions Definitions
+#### Table 11. RoadRestrictions Definitions
 RoadRestrictions | Descriptions
 ---------------- | ------------
 **no-trucks** | Trucks are prohibited from traveling in work zone area
@@ -378,7 +360,7 @@ Data Name | Description | Example
 --------- | ----------- | -------
 **issuingOrganization** | The name of the issuing organization.<br>This name should match the name in the<br>WorkZoneActivity record. | “Anyplace public works”
 **Location-verify-method** | The method used to verify the accuracy<br>of the location information | “Survey accurate GPS equipment accurate to 0.1 cm”
-**WZ-location-method** | The typical method used to locate the<br>begin and end of a work zone impact area.<br>Select the method that most closely<br>represents how begin and end locations<br>are assigned in the WZDX file.<ul><li>channel-device-method</li><li>sign-method</li><li>junction-method</li><li>unknown - when method for<br>locating the begin and end<br>locations of the work zone is not known</li><li>other- when the method for<br>locating the begin and end<br>locations do not closely match any of the alternatives. An explanation<br>should be included in the<br>metadata when this value is assigned</li></ul>See description in Section 5. | “channel-device-method”
+**WZ-location-method** | The typical method used to locate the<br>begin and end of a work zone impact area.<br>Select the method that most closely<br>represents how begin and end locations<br>are assigned in the WZDX file.<ul><li>channel-device-method</li><li>sign-method</li><li>junction-method</li><li>unknown - when method for<br>locating the location of the work zone is not known</li><li>other- when the method for<br>locating the locations do not closely match any of the alternatives. An explanation<br>should be included in the<br>metadata when this value is assigned</li></ul>See description in Section 5. | “channel-device-method”
 **LRS-Type** | Describes the type of linear referencing<br>system used for the milepost<br>measurements | “Use of milemarkers posted the<br>roadways. These are registered<br>to a dynamic segmentation of<br>statewide LRS basemap.” 
 **LRS-URL** | A URL where additional information on the<br>LRS information and transformation<br>information is stored | https://aaa.bbb.com/lrs
 **Datafeed-frequency-update** | The frequency at which the data feed is<br>updated and made available through the<br>data feed. Format shall include value+<br>units such as<br>30s, 15m, or 24h where:<ul><li>s = seconds</li><li>m = minutes</li><li>h-hours</li></ul> | "30s"<br>"15m"<br>24h
@@ -403,8 +385,7 @@ Identifier |
 subidentifier |
 StartDateTime<ul><li>startDateTime-est</li><li>startDateTime-ver</li></ul> |
 EndDateTime<ul><li>endDateTime-est</li><li>endDateTime-ver</li></ul> |
-BeginLocation<ul><li>roadName</li><li>roadNum</li><li>latitude</li><li>longitude</li><li>milepost</li></ul> |
-EndLocation<ul><li>latitude</li><li>longitude</li><li>milepost</li></ul> |
+Location<ul><li>roadName</li><li>roadNum</li><li>latitude</li><li>longitude</li><li>milepost</li></ul> |
 wz-Status |
 totalLanes |
 openLanes |
@@ -428,8 +409,7 @@ Tag | Value
 Identifier | 137097
 StartDateTime<ul><li>startDateTime-ver</li></ul> | startDateTime-ver: 2016-11-03T19:37:00
 EndDateTime<ul><li>endDateTime-est</li></ul> | endDateTime-est: 2016-11-04T05:30:00
-BeginLocation<ul><li>roadName</li><li>roadNum</li><li>roadDirection</li><li>latitude</li><li>longitude</li><li>milepost</li></ul> | roadName: I-91<br>roadDirection: southbound<br>latitude-est: 42.33865<br>longitude-est: -72.63399
-EndLocation<ul><li>latitude</li><li>longitude</li><li>milepost</li></ul> | latitude-est: 42.33307<br>longitude-est: -72.6214
+Location<ul><li>roadName</li><li>roadNum</li><li>roadDirection</li><li>latitude</li><li>longitude</li><li>milepost</li></ul> | roadName: I-91<br>roadDirection: southbound<br>latitude-est: 42.33865<br>longitude-est: -72.63399
 wz-Status | active
 totalLanes | 3
 openLanes | right2
@@ -447,8 +427,7 @@ Tag | Value
 Identifier | 320
 StartDateTime<ul><li>startDateTime-ver</li></ul> | 2015-01-07T16:50:56Z
 EndDateTime<ul><li>endDateTime</li></ul> | n/a
-BeginLocation<ul><li>roadName</li><li>roadNum</li><li>roadDirection</li><li>latitude</li><li>longitude</li><li>milepost</li></ul> | roadName: I-35<br>roadDirection: Northbound<br>latitude-ver: 31.0855180<br>longitude-ver: -97.4030700
-EndLocation<ul><li>latitude</li><li>longitude</li><li>milepost</li></ul> | latitude-ver: 31.0855180<br>longitude-ver: -97.4030700
+Location<ul><li>roadName</li><li>roadNum</li><li>roadDirection</li><li>latitude</li><li>longitude</li><li>milepost</li></ul> | roadName: I-35<br>roadDirection: Northbound<br>latitude-ver: 31.0855180<br>longitude-ver: -97.4030700
 wz-Status | active
 totalLanes | 3
 openLanes | all
@@ -466,8 +445,7 @@ Tag | Value
 Identifier | C299CA-0004-2016-04-12-00:01:00
 StartDateTime<ul><li>startDateTime</li></ul> | startDateTime-ver: 2016-04-12T15:58:00
 EndDateTime<ul><li>endDateTime</li></ul> | endDateTime-est: 2016-04-30T
-BeginLocation<ul><li>roadName</li><li>roadNum</li><li>roadDirection</li><li>latitude</li><li>longitude</li><li>milepost</li></ul> | roadName: CA-299<br>roadDirection: East<br>latitude-est: 40.635122<br>longitude-est: -122.733841<br>milepost-est: 114.190T23:59:00
-EndLocation<ul><li>latitude</li><li>longitude</li><li>milepost</li></ul> | latitude-est: 40.67201<br>longitude-est: -122.654384<br>milepost-est: 121.633
+Location<ul><li>roadName</li><li>roadNum</li><li>roadDirection</li><li>latitude</li><li>longitude</li><li>milepost</li></ul> | roadName: CA-299<br>roadDirection: East<br>latitude-est: 40.635122<br>longitude-est: -122.733841<br>milepost-est: 114.190T23:59:00
 wz-Status | Active
 totalLanes | 2
 openLanes | right
@@ -490,13 +468,13 @@ See files in separate attachment:
 ## WZ Location Method Description and Practices 
 The metadata file will include one of five enumerated type values for WZ-location-method field.  
 
-For this data element (WZ-location-method), select the value below that most closely represents how begin and end locations are assigned in the WZDX file.
+For this data element (WZ-location-method), select the value below that most closely represents how location is assigned in the WZDX file.
 
 * **channel-device-method** (see section 5.1) – *this is the preferred method*
 * **sign-method** (see section 5.2)
 * **junction-method** (see section 5.3)
-* **unknown** – when method for locating the begin and end locations of the work zone is not known
-* **other** – when the method for locating the begin and end locations do not closely match any of the alternatives. An explanation should be included in the metadata when this value is assigned.
+* **unknown** – when method for locating the work zone is not known
+* **other** – when the method for locating the work zone does not closely match any of the alternatives. An explanation should be included in the metadata when this value is assigned.
 
 ### channel-device-method (Preferred Method)
 Location of first and last channeling device (e.g., cone or barrier) that is part of a “travel impact effect” (taper) or designation of a work zone transition area. For complex work zones with multiple activities, begin and end locations are the first channeling device for first activity up to the last channeling device of the last activity.
